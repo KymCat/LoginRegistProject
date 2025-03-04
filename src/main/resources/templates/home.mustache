@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+    <div class="container right-panel-active">
+        <!-- Sign Up -->
+        <div class="container__form container--signup">
+            <form action="/regist" class="form" id="form1" method="post">
+                <h2 class="form__title">회원가입</h2>
+                <input type="text" name="name" placeholder="닉네임" class="input" />
+                <input type="email" name="email" placeholder="이메일" class="input" />
+                <input type="password" name="password" placeholder="비밀번호" class="input" />
+                <button type="submit" class="btn">회원가입</button>
+            </form>
+        </div>
+
+        <!-- Sign In -->
+        <div class="container__form container--signin">
+            <form action="/login" class="form" id="form2" method="post">
+                <h2 class="form__title">로그인</h2>
+                <input type="email" name="email" placeholder="이메일" class="input" />
+                <input type="password" name="password" placeholder="비밀번호" class="input" />
+                <a href="#" class="link">비밀번호를 잊어버리셨나요?</a>
+                <button type="submit" class="btn">로그인</button>
+            </form>
+        </div>
+
+        <!-- Overlay -->
+        <div class="container__overlay">
+            <div class="overlay">
+                <div class="overlay__panel overlay--left">
+                    <button class="btn" id="signIn">로그인</button>
+                </div>
+                <div class="overlay__panel overlay--right">
+                    <button class="btn" id="signUp">회원가입</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/home.js"></script>
+</body>
+</html>
