@@ -43,6 +43,11 @@
             </div>
         </div>
     </div>
+    {{#errorMessage}}
+        <script>
+            alert("{{errorMessage}}")
+        </script>
+    {{/errorMessage}}
     <script src="/js/home.js"></script>
 </body>
 </html>
