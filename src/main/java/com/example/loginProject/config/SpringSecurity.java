@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 
 @Configuration
@@ -30,10 +31,11 @@ public class SpringSecurity {
                         .anyRequest().authenticated() // 그 외의 요청은 인증된 사용자만 접근 가능
                 )
                 .formLogin((form) -> form
-                        .loginPage("/signIn") // Login 페이지
-                        .loginProcessingUrl("/signIn/auth") // POST ACTION URL
+                        .loginPage("/auth") // Login 페이지
+                        .loginProcessingUrl("/auth/login") // POST ACTION URL
                         .usernameParameter("email") // 사용자 이름 파라미터 name 속성
                         .passwordParameter("password") // 비밀번호 파라미터 name 속성
+                        .defaultSuccessUrl("/", true)
                         .permitAll() // 로그인 페이지는 모두 허용
                 );
 
