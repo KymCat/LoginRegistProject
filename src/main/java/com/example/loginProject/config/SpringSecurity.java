@@ -35,8 +35,14 @@ public class SpringSecurity {
                         .loginProcessingUrl("/auth/login") // POST ACTION URL
                         .usernameParameter("email") // 사용자 이름 파라미터 name 속성
                         .passwordParameter("password") // 비밀번호 파라미터 name 속성
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/", true) // 로그인 성공시
+                        .failureUrl("/auth?error=true") // 로그인 실패시
                         .permitAll() // 로그인 페이지는 모두 허용
+                )
+                .logout((logout) -> logout
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/auth")
+                        .permitAll()
                 );
 
         return http.build();
