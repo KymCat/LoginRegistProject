@@ -1,5 +1,7 @@
 package com.example.loginProject.config;
 
+import com.example.loginProject.handler.CustomAuthenticationFailureHandler;
+import com.example.loginProject.handler.CustomLogoutSuccessHandler;
 import com.example.loginProject.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 
 @Configuration
@@ -16,6 +17,8 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 @RequiredArgsConstructor
 public class SpringSecurity {
     private final CustomUserDetailService customUserDetailService;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -27,7 +30,7 @@ public class SpringSecurity {
         http
                 .userDetailsService(customUserDetailService) // 커스텀 userDetailService 사용
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers( "/css/**", "/js/**").permitAll() // 해당 URL은 인증없이 접근가능
+                        .requestMatchers( "/css/**", "/js/**", "/auth/regist").permitAll() // 해당 URL은 인증없이 접근가능
                         .anyRequest().authenticated() // 그 외의 요청은 인증된 사용자만 접근 가능
                 )
                 .formLogin((form) -> form
@@ -36,12 +39,14 @@ public class SpringSecurity {
                         .usernameParameter("email") // 사용자 이름 파라미터 name 속성
                         .passwordParameter("password") // 비밀번호 파라미터 name 속성
                         .defaultSuccessUrl("/", true) // 로그인 성공시
-                        .failureUrl("/auth?error=true") // 로그인 실패시
+                        .failureHandler(customAuthenticationFailureHandler)
                         .permitAll() // 로그인 페이지는 모두 허용
                 )
                 .logout((logout) -> logout
                         .logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/auth")
+                        .logoutSuccessHandler(customLogoutSuccessHandler)
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .clearAuthentication(true) // 인증 정보 삭제
                         .permitAll()
                 );
 

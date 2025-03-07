@@ -5,6 +5,7 @@ import com.example.loginProject.entity.User;
 import com.example.loginProject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -12,22 +13,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User registerUser(UserForm form) {
-        log.info("Sign in Form : " + form.toString());
+    public Boolean save(UserForm form) {
+        log.info("Form Data : " + form.toString());
 
         User userEntity = form.toEntity();
+        if (userRepository.findByEmail(userEntity.getEmail()).orElse(null) != null)
+            return false;
+
+        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
         User saved = userRepository.save(userEntity);
-        log.info("saved user : " + saved);
+        log.info("Saved User : " + saved);
 
-        return saved;
+        return true;
     }
 
-    public Boolean login(UserForm form) {
-        log.info("login form : " + form.toString());
-
-        return userRepository.findByEmail(form.getEmail())
-                .map(user-> user.getPassword().equals(form.getPassword()))
-                .orElse(null);
-    }
 }
