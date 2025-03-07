@@ -11,11 +11,12 @@
     <div class="container right-panel-active">
         <!-- Sign Up -->
         <div class="container__form container--signup">
-            <form action="/regist" class="form" id="form1" method="post">
+            <form action="/auth/regist" class="form" id="form1" method="post">
                 <h2 class="form__title">회원가입</h2>
-                <input type="text" name="name" placeholder="닉네임" class="input" />
-                <input type="email" name="regist-email" placeholder="이메일" class="input" />
-                <input type="password" name="regits-password" placeholder="비밀번호" class="input" />
+                <input type="text" name="name" placeholder="닉네임" class="input" required/>
+                <input type="email" name="email" placeholder="이메일" class="input" required/>
+                <input type="password" name="password" placeholder="비밀번호" class="input" required/>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <button type="submit" class="btn">회원가입</button>
             </form>
         </div>
@@ -24,8 +25,8 @@
         <div class="container__form container--signin">
             <form action="/auth/login" class="form" id="form2" method="post">
                 <h2 class="form__title">로그인</h2>
-                <input type="email" name="email" placeholder="이메일" class="input" />
-                <input type="password" name="password" placeholder="비밀번호" class="input" />
+                <input type="email" name="email" placeholder="이메일" class="input" required/>
+                <input type="password" name="password" placeholder="비밀번호" class="input" required/>
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
                 <a href="#" class="link">비밀번호를 잊어버리셨나요?</a>
                 <button type="submit" class="btn">로그인</button>
@@ -44,11 +45,11 @@
             </div>
         </div>
     </div>
-    {{#loginError}}
+    {{#message}}
         <script>
-            alert("{{loginError}}")
+            alert("{{message}}")
         </script>
-    {{/loginError}}
+    {{/message}}
     <script src="/js/home.js"></script>
 </body>
 </html>
